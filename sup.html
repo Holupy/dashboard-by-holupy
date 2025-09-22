@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: rgba(4, 80, 80, 0.865);
+            padding-top: 20px;
+            padding-bottom: 80px;
+        }
+
+        .dashboard-card {
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+            border: none;
+            overflow: hidden; /* Ensures rounded corners */
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, rgba(20, 121, 121, 0.961), rgba(6, 167, 167, 0.829));
+            color: white;
+            font-weight: 600;
+            padding: 1rem 1.5rem;
+            cursor: pointer; /* Indicates it's clickable */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header:hover {
+            opacity: 0.9;
+        }
+
+        .card-header .toggle-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .card-header .toggle-icon.collapsed {
+            transform: rotate(-90deg);
+        }
+
+        .card-body {
+            background-color: rgba(149, 158, 158, 0.578);
+        }
+
+        .nav-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-size: 20px;
+        }
+
+        .nav-item {
+            text-align: center;
+            padding: 15px 10px;
+            border-radius: 12px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-item:hover {
+            background-color: rgba(0, 61, 121, 0.05);
+            transform: translateY(-3px);
+        }
+
+        .nav-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #333;
+            margin-top: 5px;
+        }
+
+        .balance-card {
+            background: linear-gradient(135deg, rgb(8, 75, 75), rgba(8, 124, 124, 0.865));
+            color: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .notification-icon {
+            position: relative;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #dc3545;
+            color: white;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .balance-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .eye-toggle {
+            background: rgba(255, 255, 255, 0.2);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .eye-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .hidden-balance {
+            letter-spacing: 5px;
+            margin-right: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="balance-card text-center mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h3 mb-0">User Dashboard</h1>
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        <div class="notification-icon">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge">3</span>
+                        </div>
+                    </div>
+                    <div>
+                        <img src="https://ui-avatars.com/api/?name=User&background=fff&color=008080" class="rounded-circle" width="40" height="40" alt="User">
+                    </div>
+                </div>
+            </div>
+
+            <p class="mb-1">Available Balance</p>
+            <div class="balance-container">
+                <div class="eye-toggle" id="eyeToggle">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <h2 class="mb-0" id="balanceDisplay">$1,250.75</h2>
+            </div>
+        </div>
+
+        <div class="card dashboard-card">
+            <div class="card-header py-3" data-bs-toggle="collapse" data-bs-target="#dashboardCollapse" aria-expanded="true" aria-controls="dashboardCollapse">
+                <div><i class="fas fa-th-large me-2"></i> Dashboard</div>
+                <i class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+            <div class="collapse show" id="dashboardCollapse">
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-4">
+                            <a href="#" class="text-decoration-none">
+                                <div class="nav-item">
+                                    <div class="nav-icon" style="background-color: rgba(0, 61, 121, 0.1); color: #003D79;">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                    <div class="nav-label">Investment</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-4">
+                            <a href="#" class="text-decoration-none">
+                                <div class="nav-item">
+                                    <div class="nav-icon" style="background-color: rgba(255, 107, 0, 0.1); color: #FF6B00;">
+                                        <i class="fas fa-wallet"></i>
+                                    </div>
+                                    <div class="nav-label">Current Investment</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-4">
+                            <a href="#" class="text-decoration-none">
+                                <div class="nav-item">
+                                    <div class="nav-icon" style="background-color: rgba(0, 168, 255, 0.1); color: #00A8FF;">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <div class="nav-label">Referral</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card dashboard-card">
+            <div class="card-header py-3" data-bs-toggle="collapse" data-bs-target="#transactionsCollapse" aria-expanded="false" aria-controls="transactionsCollapse">
+                <div><i class="fas fa-exchange-alt me-2"></i> Transactions</div>
+                <i class="fas fa-chevron-down toggle-icon collapsed"></i>
+            </div>
+            <div class="collapse" id="transactionsCollapse">
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-4">
+                            <a href="#" class="text-decoration-none">
+                                <div class="nav-item">
+                                    <div class="nav-icon" style="background-color: rgba(76, 175, 80, 0.1); color: #4CAF50;">
+                                        <i class="fas fa-money-bill-wave"></i>
+                                    </div>
+                                    <div class="nav-label">Deposit Fund</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-4">
+                            <a href="#" class="text-decoration-none">
+                                <div class="nav-item">
+                                    <div class="nav-icon" style="background-color: rgba(244, 67, 54, 0.1); color: #F44336;">
+                                        <i class="fas fa-hand-holding-usd"></i>
+                                    </div>
+                                    <div class="nav-label">Withdrawals</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card dashboard-card">
+            <div class="card-header py-3" data-bs-toggle="collapse" data-bs-target="#historyCollapse" aria-expanded="false" aria-controls="historyCollapse">
+                <div><i class="fas fa-history me-2"></i> History & Reports</div>
+                <i class="fas fa-chevron-down toggle-icon collapsed"></i>
+            </div>
+            <div class="collapse" id="historyCollapse">
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-4">
+                            <a href="#" class="text-decoration-none">
+                                <div class="nav-item">
+                                    <div class="nav-icon" style="background-color: rgba(0, 168, 255, 0.1); color: #00A8FF;">
+                                        <i class="fas fa-chart-bar"></i>
+                                    </div>
+                                    <div class="nav-label">Report</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-4">
+                            <a href="#" class="text-decoration-none">
+                                <div class="nav-item">
+                                    <div class="nav-icon" style="background-color: rgba(156, 39, 176, 0.1); color: #9C27B0;">
+                                        <i class="fas fa-history"></i>
+                                    </div>
+                                    <div class="nav-label">Withdrawal History</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-4">
+                            <a href="#" class="text-decoration-none">
+                                <div class="nav-item">
+                                    <div class="nav-icon" style="background-color: rgba(255, 152, 0, 0.1); color: #FF9800;">
+                                        <i class="fas fa-user-friends"></i>
+                                    </div>
+                                    <div class="nav-label">Referral History</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-4 mt-3">
+                            <a href="#" class="text-decoration-none">
+                                <div class="nav-item">
+                                    <div class="nav-icon" style="background-color: rgba(33, 150, 243, 0.1); color: #2196F3;">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                    <div class="nav-label">Investment History</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card dashboard-card">
+            <div class="card-header py-3" data-bs-toggle="collapse" data-bs-target="#accountCollapse" aria-expanded="false" aria-controls="accountCollapse">
+                <div><i class="fas fa-user-circle me-2"></i> User Account</div>
+                <i class="fas fa-chevron-down toggle-icon collapsed"></i>
+            </div>
+            <div class="collapse" id="accountCollapse">
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-4">
+                            <a href="#" class="text-decoration-none">
+                                <div class="nav-item">
+                                    <div class="nav-icon" style="background-color: rgba(0, 61, 121, 0.1); color: #003D79;">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div class="nav-label">Profile</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-4">
+                            <a href="#" class="text-decoration-none">
+                                <div class="nav-item">
+                                    <div class="nav-icon" style="background-color: rgba(255, 152, 0, 0.1); color: #FF9800;">
+                                        <i class="fas fa-key"></i>
+                                    </div>
+                                    <div class="nav-label">Change Password</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-4">
+                            <a href="#" class="text-decoration-none">
+                                <div class="nav-item">
+                                    <div class="nav-icon" style="background-color: rgba(244, 67, 54, 0.1); color: #F44336;">
+                                        <i class="fas fa-sign-out-alt"></i>
+                                    </div>
+                                    <div class="nav-label">Logout</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card dashboard-card">
+            <div class="card-header py-3" data-bs-toggle="collapse" data-bs-target="#moreServicesCollapse" aria-expanded="false" aria-controls="moreServicesCollapse">
+                <div><i class="fas fa-ellipsis-h me-2"></i> More Services</div>
+                <i class="fas fa-chevron-down toggle-icon collapsed"></i>
+            </div>
+            <div class="collapse" id="moreServicesCollapse">
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-4">
+                            <a href="#" class="text-decoration-none">
+                                <div class="nav-item">
+                                    <div class="nav-icon" style="background-color: rgba(0, 61, 121, 0.1); color: #003D79;">
+                                        <i class="fas fa-coins"></i>
+                                    </div>
+                                    <div class="nav-label">OWealth</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-4">
+                            <a href="#" class="text-decoration-none">
+                                <div class="nav-item">
+                                    <div class="nav-icon" style="background-color: rgba(0, 168, 255, 0.1); color: #00A8FF;">
+                                        <i class="fas fa-hand-holding-usd"></i>
+                                    </div>
+                                    <div class="nav-label">Loan</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-4">
+                            <a href="#" class="text-decoration-none">
+                                <div class="nav-item">
+                                    <div class="nav-icon" style="background-color: rgba(255, 107, 0, 0.1); color: #FF6B00;">
+                                        <i class="fas fa-gamepad"></i>
+                                    </div>
+                                    <div class="nav-label">Play4sChild</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-4 mt-3">
+                            <a href="#" class="text-decoration-none">
+                                <div class="nav-item">
+                                    <div class="nav-icon" style="background-color: rgba(33, 150, 243, 0.1); color: #2196F3;">
+                                        <i class="fas fa-headset"></i>
+                                    </div>
+                                    <div class="nav-label">Support Ticket</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-4 mt-3">
+                            <a href="#" class="text-decoration-none">
+                                <div class="nav-item">
+                                    <div class="nav-icon" style="background-color: rgba(76, 175, 80, 0.1); color: #4CAF50;">
+                                        <i class="fas fa-address-book"></i>
+                                    </div>
+                                    <div class="nav-label">Contact</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const eyeToggle = document.getElementById('eyeToggle');
+            const balanceDisplay = document.getElementById('balanceDisplay');
+            let balanceVisible = true;
+            const actualBalance = '$1,250.75';
+
+            eyeToggle.addEventListener('click', function() {
+                balanceVisible = !balanceVisible;
+                if (balanceVisible) {
+                    balanceDisplay.textContent = actualBalance;
+                    eyeToggle.innerHTML = '<i class="fas fa-eye"></i>';
+                } else {
+                    balanceDisplay.innerHTML = '<span class="hidden-balance">•••••</span>';
+                    eyeToggle.innerHTML = '<i class="fas fa-eye-slash"></i>';
+                }
+            });
+
+            // Toggle icon rotation
+            const collapseElements = document.querySelectorAll('.collapse');
+            collapseElements.forEach(collapseEl => {
+                collapseEl.addEventListener('show.bs.collapse', function () {
+                    const toggleIcon = collapseEl.previousElementSibling.querySelector('.toggle-icon');
+                    toggleIcon.classList.remove('collapsed');
+                });
+
+                collapseEl.addEventListener('hide.bs.collapse', function () {
+                    const toggleIcon = collapseEl.previousElementSibling.querySelector('.toggle-icon');
+                    toggleIcon.classList.add('collapsed');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
