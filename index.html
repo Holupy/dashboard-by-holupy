@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finance Dashboard</title>
+    <title>Finance Dashboard - Investment Plans</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -13,6 +13,8 @@
             background-color: rgba(4, 80, 80, 0.865);
             padding-top: 20px;
             padding-bottom: 80px;
+            margin: 0;
+            transition: all 0.5s ease;
         }
 
         .dashboard-card {
@@ -20,7 +22,7 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             margin-bottom: 20px;
             border: none;
-            overflow: hidden; /* Ensures rounded corners */
+            overflow: hidden;
         }
 
         .card-header {
@@ -28,7 +30,7 @@
             color: white;
             font-weight: 600;
             padding: 1rem 1.5rem;
-            cursor: pointer; /* Indicates it's clickable */
+            cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -149,10 +151,305 @@
             font-weight: 600;
             color: #ffcc00;
         }
+        
+        /* Investment Plans Full Screen Styles */
+        .investment-plans-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(4, 80, 80, 0.9), rgba(8, 124, 124, 0.9));
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .plans-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            color: white;
+        }
+        
+        .back-to-dashboard {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .back-to-dashboard:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-5px);
+        }
+        
+        .plans-title {
+            font-size: 28px;
+            font-weight: 700;
+            text-align: center;
+            margin: 0;
+        }
+        
+        .plans-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .plan-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+        
+        .plan-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .plan-header {
+            padding: 25px;
+            text-align: center;
+            color: white;
+        }
+        
+        .gold-plan .plan-header {
+            background: linear-gradient(135deg, #FFD700, #D4AF37);
+        }
+        
+        .silver-plan .plan-header {
+            background: linear-gradient(135deg, #C0C0C0, #A8A8A8);
+        }
+        
+        .bronze-plan .plan-header {
+            background: linear-gradient(135deg, #CD7F32, #8C7853);
+        }
+        
+        .plan-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        
+        .plan-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .plan-package {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        
+        .plan-body {
+            padding: 25px;
+        }
+        
+        .plan-feature {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .feature-label {
+            font-weight: 500;
+            color: #555;
+        }
+        
+        .feature-value {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .roi-value {
+            color: #28a745;
+            font-size: 18px;
+        }
+        
+        .learn-more-btn {
+            background: transparent;
+            border: 2px solid #008080;
+            color: #008080;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 15px;
+        }
+        
+        .learn-more-btn:hover {
+            background: #008080;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .invest-btn {
+            background: linear-gradient(135deg, #008080, #006666);
+            border: none;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .invest-btn:hover {
+            background: linear-gradient(135deg, #006666, #004d4d);
+            transform: translateY(-2px);
+        }
+        
+        .plan-details {
+            display: none;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .plan-benefits {
+            margin-bottom: 20px;
+        }
+        
+        .benefit-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .benefit-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+        
+        .benefit-list li:before {
+            content: "✓";
+            color: #28a745;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .investment-form {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        .form-control:focus {
+            border-color: #008080;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 128, 128, 0.2);
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .confirm-btn {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            border: none;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+        }
+        
+        .confirm-btn:hover {
+            background: linear-gradient(135deg, #20c997, #198754);
+            transform: translateY(-2px);
+        }
+        
+        .cancel-btn {
+            background: #6c757d;
+            border: none;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+        }
+        
+        .cancel-btn:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+        
+        .amount-info {
+            font-size: 14px;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+        
+        /* Animation for screen transition */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- Main Dashboard -->
+    <div class="container" id="dashboardContainer">
         <div class="balance-card text-center mb-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1 class="h3 mb-0">User Dashboard</h1>
@@ -216,12 +513,22 @@
                                 </div>
                             </a>
                         </div>
+                        <div class="col-4 mt-3">
+                            <a href="#" class="text-decoration-none">
+                                <div class="nav-item" id="investmentPlansBtn">
+                                    <div class="nav-icon" style="background-color: rgba(76, 175, 80, 0.1); color: #4CAF50;">
+                                        <i class="fas fa-seedling"></i>
+                                    </div>
+                                    <div class="nav-label">Investment Plans</div>
+                                </div>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         
-        <!-- New Trading Section -->
+        <!-- Rest of your dashboard sections remain the same -->
         <div class="card dashboard-card">
             <div class="card-header py-3" data-bs-toggle="collapse" data-bs-target="#tradingCollapse" aria-expanded="false" aria-controls="tradingCollapse">
                 <div><i class="fas fa-chart-bar me-2"></i> Trading</div>
@@ -307,177 +614,376 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="card dashboard-card">
-            <div class="card-header py-3" data-bs-toggle="collapse" data-bs-target="#historyCollapse" aria-expanded="false" aria-controls="historyCollapse">
-                <div><i class="fas fa-history me-2"></i> History & Reports</div>
-                <i class="fas fa-chevron-down toggle-icon collapsed"></i>
-            </div>
-            <div class="collapse" id="historyCollapse">
-                <div class="card-body">
-                    <div class="row text-center">
-                        <div class="col-4">
-                            <a href="#" class="text-decoration-none">
-                                <div class="nav-item">
-                                    <div class="nav-icon" style="background-color: rgba(0, 168, 255, 0.1); color: #00A8FF;">
-                                         <i class="fas fa-receipt"></i>
-                                    </div>
-                                    <div class="nav-label">deposit history</div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-4">
-                            <a href="#" class="text-decoration-none">
-                                <div class="nav-item">
-                                    <div class="nav-icon" style="background-color: rgba(156, 39, 176, 0.1); color: #9C27B0;">
-                                        <i class="fas fa-history"></i>
-                                    </div>
-                                    <div class="nav-label">Withdrawal History</div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-4">
-                            <a href="#" class="text-decoration-none">
-                                <div class="nav-item">
-                                    <div class="nav-icon" style="background-color: rgba(255, 152, 0, 0.1); color: #FF9800;">
-                                        <i class="fas fa-user-friends"></i>
-                                    </div>
-                                    <div class="nav-label">Referral History</div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-4 mt-3">
-                            <a href="#" class="text-decoration-none">
-                                <div class="nav-item">
-                                    <div class="nav-icon" style="background-color: rgba(33, 150, 243, 0.1); color: #2196F3;">
-                                        <i class="fas fa-chart-line"></i>
-                                    </div>
-                                    <div class="nav-label">Investment History</div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card dashboard-card">
-            <div class="card-header py-3" data-bs-toggle="collapse" data-bs-target="#accountCollapse" aria-expanded="false" aria-controls="accountCollapse">
-                <div><i class="fas fa-user-circle me-2"></i> User Account</div>
-                <i class="fas fa-chevron-down toggle-icon collapsed"></i>
-            </div>
-            <div class="collapse" id="accountCollapse">
-                <div class="card-body">
-                    <div class="row text-center">
-                        <div class="col-4">
-                            <a href="#" class="text-decoration-none">
-                                <div class="nav-item">
-                                    <div class="nav-icon" style="background-color: rgba(0, 61, 121, 0.1); color: #003D79;">
-                                        <i class="fas fa-user"></i>
-                                    </div>
-                                    <div class="nav-label">Profile</div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-4">
-                            <a href="#" class="text-decoration-none">
-                                <div class="nav-item">
-                                    <div class="nav-icon" style="background-color: rgba(255, 152, 0, 0.1); color: #FF9800;">
-                                        <i class="fas fa-key"></i>
-                                    </div>
-                                    <div class="nav-label">Change Password</div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-4">
-                            <a href="#" class="text-decoration-none">
-                                <div class="nav-item">
-                                    <div class="nav-icon" style="background-color: rgba(244, 67, 54, 0.1); color: #F44336;">
-                                        <i class="fas fa-sign-out-alt"></i>
-                                    </div>
-                                    <div class="nav-label">Logout</div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <!-- Investment Plans Full Screen -->
+    <div class="investment-plans-screen" id="investmentPlansScreen">
+        <div class="plans-header">
+            <button class="back-to-dashboard" id="backToDashboardBtn">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </button>
+            <h1 class="plans-title">Investment Plans</h1>
+            <div style="width: 140px;"></div> <!-- Spacer for alignment -->
         </div>
         
-        <div class="card dashboard-card">
-            <div class="card-header py-3" data-bs-toggle="collapse" data-bs-target="#moreServicesCollapse" aria-expanded="false" aria-controls="moreServicesCollapse">
-                <div><i class="fas fa-ellipsis-h me-2"></i> More Services</div>
-                <i class="fas fa-chevron-down toggle-icon collapsed"></i>
+        <div class="plans-container">
+            <!-- Gold Plan -->
+            <div class="plan-card gold-plan fade-in">
+                <div class="plan-header">
+                    <div class="plan-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h2 class="plan-name">Gold Plan</h2>
+                    <div class="plan-package">$10,001 - $20,000</div>
+                </div>
+                <div class="plan-body">
+                    <div class="plan-feature">
+                        <span class="feature-label">ROI</span>
+                        <span class="feature-value roi-value">12.00%</span>
+                    </div>
+                    <div class="plan-feature">
+                        <span class="feature-label">Duration</span>
+                        <span class="feature-value">12 Days</span>
+                    </div>
+                    <div class="plan-feature">
+                        <span class="feature-label">Min Amount</span>
+                        <span class="feature-value">$10,000</span>
+                    </div>
+                    <div class="plan-feature">
+                        <span class="feature-label">Max Amount</span>
+                        <span class="feature-value">$20,000</span>
+                    </div>
+                    
+                    <button class="learn-more-btn" data-plan="gold">
+                        <i class="fas fa-info-circle me-2"></i>Learn More
+                    </button>
+                    <button class="invest-btn" data-plan="gold">
+                        <i class="fas fa-seedling me-2"></i>Invest Now
+                    </button>
+                    
+                    <div class="plan-details" id="goldDetails">
+                        <div class="plan-benefits">
+                            <h4>Plan Benefits</h4>
+                            <ul class="benefit-list">
+                                <li>Premium customer support 24/7</li>
+                                <li>Priority withdrawal processing</li>
+                                <li>Personal account manager</li>
+                                <li>Exclusive market insights and analysis</li>
+                                <li>Higher referral commission (15%)</li>
+                                <li>Weekly performance reports</li>
+                                <li>Risk management advisory</li>
+                            </ul>
+                        </div>
+                        <button class="cancel-btn back-to-plan" data-plan="gold">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Plan
+                        </button>
+                    </div>
+                    
+                    <div class="investment-form" id="goldForm">
+                        <h4 class="form-title">Invest in Gold Plan</h4>
+                        <div class="form-group">
+                            <label class="form-label">Investment Amount (USD)</label>
+                            <input type="number" class="form-control" id="goldAmount" placeholder="Enter amount between $10,000 - $20,000" min="10000" max="20000">
+                            <div class="amount-info">Minimum: $10,000 | Maximum: $20,000</div>
+                        </div>
+                        <div class="form-actions">
+                            <button class="confirm-btn" id="confirmGold">
+                                <i class="fas fa-check me-2"></i>Confirm Investment
+                            </button>
+                            <button class="cancel-btn back-to-plan" data-plan="gold">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="collapse" id="moreServicesCollapse">
-                <div class="card-body">
-                    <div class="row text-center">
-                        <div class="col-4">
-                            <a href="#" class="text-decoration-none">
-                                <div class="nav-item">
-                                    <div class="nav-icon" style="background-color: rgba(0, 61, 121, 0.1); color: #003D79;">
-                                        <i class="fas fa-coins"></i>
-                                    </div>
-                                    <div class="nav-label">OWealth</div>
-                                </div>
-                            </a>
+            
+            <!-- Silver Plan -->
+            <div class="plan-card silver-plan fade-in">
+                <div class="plan-header">
+                    <div class="plan-icon">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <h2 class="plan-name">Silver Plan</h2>
+                    <div class="plan-package">$5,001 - $10,000</div>
+                </div>
+                <div class="plan-body">
+                    <div class="plan-feature">
+                        <span class="feature-label">ROI</span>
+                        <span class="feature-value roi-value">10.00%</span>
+                    </div>
+                    <div class="plan-feature">
+                        <span class="feature-label">Duration</span>
+                        <span class="feature-value">10 Days</span>
+                    </div>
+                    <div class="plan-feature">
+                        <span class="feature-label">Min Amount</span>
+                        <span class="feature-value">$5,000</span>
+                    </div>
+                    <div class="plan-feature">
+                        <span class="feature-label">Max Amount</span>
+                        <span class="feature-value">$10,000</span>
+                    </div>
+                    
+                    <button class="learn-more-btn" data-plan="silver">
+                        <i class="fas fa-info-circle me-2"></i>Learn More
+                    </button>
+                    <button class="invest-btn" data-plan="silver">
+                        <i class="fas fa-seedling me-2"></i>Invest Now
+                    </button>
+                    
+                    <div class="plan-details" id="silverDetails">
+                        <div class="plan-benefits">
+                            <h4>Plan Benefits</h4>
+                            <ul class="benefit-list">
+                                <li>Priority customer support</li>
+                                <li>Faster withdrawal processing</li>
+                                <li>Weekly market analysis</li>
+                                <li>Enhanced referral commission (12%)</li>
+                                <li>Bi-weekly performance reports</li>
+                                <li>Basic risk management advisory</li>
+                            </ul>
                         </div>
-                        <div class="col-4">
-                            <a href="#" class="text-decoration-none">
-                                <div class="nav-item">
-                                    <div class="nav-icon" style="background-color: rgba(0, 168, 255, 0.1); color: #00A8FF;">
-                                        <i class="fas fa-hand-holding-usd"></i>
-                                    </div>
-                                    <div class="nav-label">Loan</div>
-                                </div>
-                            </a>
+                        <button class="cancel-btn back-to-plan" data-plan="silver">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Plan
+                        </button>
+                    </div>
+                    
+                    <div class="investment-form" id="silverForm">
+                        <h4 class="form-title">Invest in Silver Plan</h4>
+                        <div class="form-group">
+                            <label class="form-label">Investment Amount (USD)</label>
+                            <input type="number" class="form-control" id="silverAmount" placeholder="Enter amount between $5,000 - $10,000" min="5000" max="10000">
+                            <div class="amount-info">Minimum: $5,000 | Maximum: $10,000</div>
                         </div>
-                        <div class="col-4">
-                            <a href="#" class="text-decoration-none">
-                                <div class="nav-item">
-                                    <div class="nav-icon" style="background-color: rgba(255, 107, 0, 0.1); color: #FF6B00;">
-                                        <i class="fas fa-gamepad"></i>
-                                    </div>
-                                    <div class="nav-label">Play4sChild</div>
-                                </div>
-                            </a>
+                        <div class="form-actions">
+                            <button class="confirm-btn" id="confirmSilver">
+                                <i class="fas fa-check me-2"></i>Confirm Investment
+                            </button>
+                            <button class="cancel-btn back-to-plan" data-plan="silver">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </button>
                         </div>
-                        <div class="col-4 mt-3">
-                            <a href="#" class="text-decoration-none">
-                                <div class="nav-item">
-                                    <div class="nav-icon" style="background-color: rgba(33, 150, 243, 0.1); color: #2196F3;">
-                                        <i class="fas fa-headset"></i>
-                                    </div>
-                                    <div class="nav-label">Support Ticket</div>
-                                </div>
-                            </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bronze Plan -->
+            <div class="plan-card bronze-plan fade-in">
+                <div class="plan-header">
+                    <div class="plan-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <h2 class="plan-name">Bronze Plan</h2>
+                    <div class="plan-package">$1,001 - $5,000</div>
+                </div>
+                <div class="plan-body">
+                    <div class="plan-feature">
+                        <span class="feature-label">ROI</span>
+                        <span class="feature-value roi-value">8.00%</span>
+                    </div>
+                    <div class="plan-feature">
+                        <span class="feature-label">Duration</span>
+                        <span class="feature-value">7 Days</span>
+                    </div>
+                    <div class="plan-feature">
+                        <span class="feature-label">Min Amount</span>
+                        <span class="feature-value">$1,000</span>
+                    </div>
+                    <div class="plan-feature">
+                        <span class="feature-label">Max Amount</span>
+                        <span class="feature-value">$5,000</span>
+                    </div>
+                    
+                    <button class="learn-more-btn" data-plan="bronze">
+                        <i class="fas fa-info-circle me-2"></i>Learn More
+                    </button>
+                    <button class="invest-btn" data-plan="bronze">
+                        <i class="fas fa-seedling me-2"></i>Invest Now
+                    </button>
+                    
+                    <div class="plan-details" id="bronzeDetails">
+                        <div class="plan-benefits">
+                            <h4>Plan Benefits</h4>
+                            <ul class="benefit-list">
+                                <li>Standard customer support</li>
+                                <li>Regular withdrawal processing</li>
+                                <li>Monthly market insights</li>
+                                <li>Standard referral commission (10%)</li>
+                                <li>Monthly performance reports</li>
+                            </ul>
                         </div>
-                        <div class="col-4 mt-3">
-                            <a href="#" class="text-decoration-none">
-                                <div class="nav-item">
-                                    <div class="nav-icon" style="background-color: rgba(76, 175, 80, 0.1); color: #4CAF50;">
-                                        <i class="fas fa-address-book"></i>
-                                    </div>
-                                    <div class="nav-label">Contact</div>
-                                </div>
-                            </a>
+                        <button class="cancel-btn back-to-plan" data-plan="bronze">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Plan
+                        </button>
+                    </div>
+                    
+                    <div class="investment-form" id="bronzeForm">
+                        <h4 class="form-title">Invest in Bronze Plan</h4>
+                        <div class="form-group">
+                            <label class="form-label">Investment Amount (USD)</label>
+                            <input type="number" class="form-control" id="bronzeAmount" placeholder="Enter amount between $1,000 - $5,000" min="1000" max="5000">
+                            <div class="amount-info">Minimum: $1,000 | Maximum: $5,000</div>
+                        </div>
+                        <div class="form-actions">
+                            <button class="confirm-btn" id="confirmBronze">
+                                <i class="fas fa-check me-2"></i>Confirm Investment
+                            </button>
+                            <button class="cancel-btn back-to-plan" data-plan="bronze">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const dashboardContainer = document.getElementById('dashboardContainer');
+            const investmentPlansScreen = document.getElementById('investmentPlansScreen');
+            const investmentPlansBtn = document.getElementById('investmentPlansBtn');
+            const backToDashboardBtn = document.getElementById('backToDashboardBtn');
+            
+            // Show investment plans screen
+            investmentPlansBtn.addEventListener('click', function() {
+                dashboardContainer.style.display = 'none';
+                investmentPlansScreen.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            });
+            
+            // Back to dashboard
+            backToDashboardBtn.addEventListener('click', function() {
+                investmentPlansScreen.style.display = 'none';
+                dashboardContainer.style.display = 'block';
+                document.body.style.overflow = 'auto';
+                
+                // Reset all plan views
+                resetAllPlanViews();
+            });
+            
+            // Learn More buttons
+            document.querySelectorAll('.learn-more-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const plan = this.getAttribute('data-plan');
+                    showPlanDetails(plan);
+                });
+            });
+            
+            // Invest Now buttons
+            document.querySelectorAll('.invest-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const plan = this.getAttribute('data-plan');
+                    showInvestmentForm(plan);
+                });
+            });
+            
+            // Back to plan buttons
+            document.querySelectorAll('.back-to-plan').forEach(button => {
+                button.addEventListener('click', function() {
+                    const plan = this.getAttribute('data-plan');
+                    resetPlanView(plan);
+                });
+            });
+            
+            // Confirm investment buttons
+            document.getElementById('confirmGold').addEventListener('click', function() {
+                const amount = document.getElementById('goldAmount').value;
+                if (validateInvestment(amount, 10000, 20000)) {
+                    alert(`Successfully invested $${amount} in Gold Plan!`);
+                    resetPlanView('gold');
+                }
+            });
+            
+            document.getElementById('confirmSilver').addEventListener('click', function() {
+                const amount = document.getElementById('silverAmount').value;
+                if (validateInvestment(amount, 5000, 10000)) {
+                    alert(`Successfully invested $${amount} in Silver Plan!`);
+                    resetPlanView('silver');
+                }
+            });
+            
+            document.getElementById('confirmBronze').addEventListener('click', function() {
+                const amount = document.getElementById('bronzeAmount').value;
+                if (validateInvestment(amount, 1000, 5000)) {
+                    alert(`Successfully invested $${amount} in Bronze Plan!`);
+                    resetPlanView('bronze');
+                }
+            });
+            
+            // Function to show plan details
+            function showPlanDetails(plan) {
+                // Hide all buttons and forms
+                document.querySelectorAll('.learn-more-btn, .invest-btn').forEach(el => {
+                    el.style.display = 'none';
+                });
+                
+                // Show details for selected plan
+                document.getElementById(plan + 'Details').style.display = 'block';
+            }
+            
+            // Function to show investment form
+            function showInvestmentForm(plan) {
+                // Hide all buttons and details
+                document.querySelectorAll('.learn-more-btn, .invest-btn').forEach(el => {
+                    el.style.display = 'none';
+                });
+                
+                // Show form for selected plan
+                document.getElementById(plan + 'Form').style.display = 'block';
+            }
+            
+            // Function to reset a specific plan view
+            function resetPlanView(plan) {
+                // Hide details and form
+                document.getElementById(plan + 'Details').style.display = 'none';
+                document.getElementById(plan + 'Form').style.display = 'none';
+                
+                // Clear form input
+                document.getElementById(plan + 'Amount').value = '';
+                
+                // Show buttons again
+                const planCard = document.querySelector(`.${plan}-plan`);
+                planCard.querySelectorAll('.learn-more-btn, .invest-btn').forEach(el => {
+                    el.style.display = 'block';
+                });
+            }
+            
+            // Function to reset all plan views
+            function resetAllPlanViews() {
+                ['gold', 'silver', 'bronze'].forEach(plan => {
+                    resetPlanView(plan);
+                });
+            }
+            
+            // Function to validate investment amount
+            function validateInvestment(amount, min, max) {
+                if (!amount || amount === '') {
+                    alert('Please enter an investment amount');
+                    return false;
+                }
+                
+                if (amount < min) {
+                    alert(`Minimum investment amount is $${min.toLocaleString()}`);
+                    return false;
+                }
+                
+                if (amount > max) {
+                    alert(`Maximum investment amount is $${max.toLocaleString()}`);
+                    return false;
+                }
+                
+                return true;
+            }
+            
+            // Your existing balance functionality
             const eyeToggle = document.getElementById('eyeToggle');
             const balanceDisplay = document.getElementById('balanceDisplay');
             const balanceType = document.getElementById('balanceType');
             let balanceVisible = true;
             
-            // Define balance values for each type
             const balanceValues = {
                 available: '$1,250.75',
                 tradingCapital: '$5,000.00',
@@ -485,7 +991,6 @@
                 referralBonus: '$125.50'
             };
             
-            // Set initial balance
             let currentBalanceType = 'available';
             let currentBalanceValue = balanceValues.available;
 
@@ -500,7 +1005,7 @@
                 }
             });
 
-            // Toggle icon rotation
+            // Your existing collapse functionality
             const collapseElements = document.querySelectorAll('.collapse');
             collapseElements.forEach(collapseEl => {
                 collapseEl.addEventListener('show.bs.collapse', function () {
@@ -514,7 +1019,7 @@
                 });
             });
             
-            // Add event listeners for trading buttons
+            // Your existing trading buttons functionality
             document.getElementById('walletBalanceBtn').addEventListener('click', function() {
                 updateBalanceDisplay('Available Balance', balanceValues.available);
             });
@@ -531,18 +1036,15 @@
                 updateBalanceDisplay('Referral Bonus', balanceValues.referralBonus);
             });
             
-            // Function to update balance display
             function updateBalanceDisplay(type, value) {
                 balanceType.textContent = type;
                 currentBalanceType = type.toLowerCase().replace(' ', '');
                 currentBalanceValue = value;
                 
-                // Update display if balance is currently visible
                 if (balanceVisible) {
                     balanceDisplay.textContent = value;
                 }
                 
-                // Close the trading section after selection (optional)
                 const tradingCollapse = document.getElementById('tradingCollapse');
                 const bsCollapse = new bootstrap.Collapse(tradingCollapse, {
                     toggle: false
