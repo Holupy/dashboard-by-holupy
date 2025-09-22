@@ -138,6 +138,17 @@
             letter-spacing: 5px;
             margin-right: 4px;
         }
+        
+        .balance-type {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+        
+        .active-balance {
+            font-weight: 600;
+            color: #ffcc00;
+        }
     </style>
 </head>
 <body>
@@ -158,7 +169,7 @@
                 </div>
             </div>
 
-            <p class="mb-1">Available Balance</p>
+            <div class="balance-type" id="balanceType">Wallet Balance</div>
             <div class="balance-container">
                 <div class="eye-toggle" id="eyeToggle">
                     <i class="fas fa-eye"></i>
@@ -202,6 +213,60 @@
                                         <i class="fas fa-users"></i>
                                     </div>
                                     <div class="nav-label">Referral</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- New Trading Section -->
+        <div class="card dashboard-card">
+            <div class="card-header py-3" data-bs-toggle="collapse" data-bs-target="#tradingCollapse" aria-expanded="false" aria-controls="tradingCollapse">
+                <div><i class="fas fa-chart-bar me-2"></i> Trading</div>
+                <i class="fas fa-chevron-down toggle-icon collapsed"></i>
+            </div>
+            <div class="collapse" id="tradingCollapse">
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-4">
+                            <a href="#" class="text-decoration-none">
+                                <div class="nav-item" id="walletBalanceBtn">
+                                    <div class="nav-icon" style="background-color: rgba(76, 175, 80, 0.1); color: #4CAF50;">
+                                        <i class="fas fa-wallet"></i>
+                                    </div>
+                                    <div class="nav-label">Wallet Balance</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-4">
+                            <a href="#" class="text-decoration-none">
+                                <div class="nav-item" id="tradingCapitalBtn">
+                                    <div class="nav-icon" style="background-color: rgba(33, 150, 243, 0.1); color: #2196F3;">
+                                        <i class="fas fa-money-bill-wave"></i>
+                                    </div>
+                                    <div class="nav-label">Trading Capital</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-4">
+                            <a href="#" class="text-decoration-none">
+                                <div class="nav-item" id="tradingProfitBtn">
+                                    <div class="nav-icon" style="background-color: rgba(255, 152, 0, 0.1); color: #FF9800;">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                    <div class="nav-label">Trading Profit</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-4 mt-3">
+                            <a href="#" class="text-decoration-none">
+                                <div class="nav-item" id="referralBonusBtn">
+                                    <div class="nav-icon" style="background-color: rgba(156, 39, 176, 0.1); color: #9C27B0;">
+                                        <i class="fas fa-gift"></i>
+                                    </div>
+                                    <div class="nav-label">Referral Bonus</div>
                                 </div>
                             </a>
                         </div>
@@ -409,13 +474,25 @@
         document.addEventListener('DOMContentLoaded', function() {
             const eyeToggle = document.getElementById('eyeToggle');
             const balanceDisplay = document.getElementById('balanceDisplay');
+            const balanceType = document.getElementById('balanceType');
             let balanceVisible = true;
-            const actualBalance = '$1,250.75';
+            
+            // Define balance values for each type
+            const balanceValues = {
+                available: '$1,250.75',
+                tradingCapital: '$5,000.00',
+                tradingProfit: '$750.25',
+                referralBonus: '$125.50'
+            };
+            
+            // Set initial balance
+            let currentBalanceType = 'available';
+            let currentBalanceValue = balanceValues.available;
 
             eyeToggle.addEventListener('click', function() {
                 balanceVisible = !balanceVisible;
                 if (balanceVisible) {
-                    balanceDisplay.textContent = actualBalance;
+                    balanceDisplay.textContent = currentBalanceValue;
                     eyeToggle.innerHTML = '<i class="fas fa-eye"></i>';
                 } else {
                     balanceDisplay.innerHTML = '<span class="hidden-balance">•••••</span>';
@@ -436,6 +513,42 @@
                     toggleIcon.classList.add('collapsed');
                 });
             });
+            
+            // Add event listeners for trading buttons
+            document.getElementById('walletBalanceBtn').addEventListener('click', function() {
+                updateBalanceDisplay('Available Balance', balanceValues.available);
+            });
+            
+            document.getElementById('tradingCapitalBtn').addEventListener('click', function() {
+                updateBalanceDisplay('Trading Capital', balanceValues.tradingCapital);
+            });
+            
+            document.getElementById('tradingProfitBtn').addEventListener('click', function() {
+                updateBalanceDisplay('Trading Profit', balanceValues.tradingProfit);
+            });
+            
+            document.getElementById('referralBonusBtn').addEventListener('click', function() {
+                updateBalanceDisplay('Referral Bonus', balanceValues.referralBonus);
+            });
+            
+            // Function to update balance display
+            function updateBalanceDisplay(type, value) {
+                balanceType.textContent = type;
+                currentBalanceType = type.toLowerCase().replace(' ', '');
+                currentBalanceValue = value;
+                
+                // Update display if balance is currently visible
+                if (balanceVisible) {
+                    balanceDisplay.textContent = value;
+                }
+                
+                // Close the trading section after selection (optional)
+                const tradingCollapse = document.getElementById('tradingCollapse');
+                const bsCollapse = new bootstrap.Collapse(tradingCollapse, {
+                    toggle: false
+                });
+                bsCollapse.hide();
+            }
         });
     </script>
 </body>
