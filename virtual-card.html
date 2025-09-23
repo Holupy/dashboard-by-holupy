@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Card - Finance Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #045050dd;
+            padding-top: 20px;
+            padding-bottom: 80px;
+            margin: 0;
+            transition: all 0.5s ease;
+        }
+
+        .dashboard-card {
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+            border: none;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, rgba(20, 121, 121, 0.961), rgba(6, 167, 167, 0.829));
+            color: white;
+            font-weight: 600;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header:hover {
+            opacity: 0.9;
+        }
+
+        .card-header .toggle-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .card-header .toggle-icon.collapsed {
+            transform: rotate(-90deg);
+        }
+
+        .card-body {
+            background-color: rgba(149, 158, 158, 0.578);
+        }
+
+        .balance-card {
+            background: linear-gradient(135deg, rgb(8, 75, 75), rgba(8, 124, 124, 0.865));
+            color: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .notification-icon {
+            position: relative;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #dc3545;
+            color: white;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .balance-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .eye-toggle {
+            background: rgba(255, 255, 255, 0.2);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .eye-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .hidden-balance {
+            letter-spacing: 5px;
+            margin-right: 4px;
+        }
+
+        .balance-type {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .active-balance {
+            font-weight: 600;
+            color: #ffcc00;
+        }
+
+        /* Virtual Card Styles */
+        .virtual-card-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .virtual-card {
+            background: linear-gradient(135deg, rgba(75, 66, 4, 0.884), rgb(64, 55, 1));
+            border-radius: 20px;
+            padding: 25px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 30px;
+            min-height: 220px;
+            max-width: 500px;
+            justify-content: center;
+
+        }
+
+        .virtual-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+            border-radius: 50%;
+        }
+
+        .card-chip {
+            width: 50px;
+            height: 40px;
+            background: linear-gradient(135deg, #d4af37, #ffd700);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .card-chip::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 30px;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+
+        .card-number {
+            font-size: 22px;
+            letter-spacing: 3px;
+            margin-bottom: 25px;
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+        }
+
+        .card-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .card-holder,
+        .card-expiry {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-label {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-bottom: 5px;
+        }
+
+        .card-value {
+            font-size: 16px;
+            font-weight: 600;
+            z-index: 10;
+        }
+
+        .card-logo {
+            position: absolute;
+            bottom: 25px;
+            right: 25px;
+            font-size: 30px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .card-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .card-btn-primary {
+            background: linear-gradient(135deg, #008080, #006666);
+            color: white;
+        }
+
+        .card-btn-primary:hover {
+            background: linear-gradient(135deg, #006666, #004d4d);
+            transform: translateY(-2px);
+        }
+
+        .card-btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .card-btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .transactions-section {
+            margin-top: 30px;
+        }
+
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .transaction-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .transaction-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .transaction-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .transaction-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .transaction-date {
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .transaction-amount {
+            font-weight: 600;
+        }
+
+        .positive {
+            color: #28a745;
+        }
+
+        .negative {
+            color: #dc3545;
+        }
+
+        .back-to-dashboard {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .back-to-dashboard:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-5px);
+        }
+
+        .section-title {
+            color: white;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .card-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .control-item {
+            background: white;
+            border-radius: 10px;
+            padding: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+
+        }
+
+        .control-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .control-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .control-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .control-desc {
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        @media (max-width: 768px) {
+            .card-number {
+                font-size: 18px;
+                letter-spacing: 2px;
+            }
+
+            .card-actions {
+                flex-direction: column;
+            }
+
+            .card-controls {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (min-width:768px) {
+            .virtual-card {
+                margin-left: 16%;
+            }
+        }
+
+        .mastercard-container {
+            width: 100px;
+            height: auto;            
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+            transition: transform 0.3s ease-in-out;
+            
+        }
+
+        .mastercard-container:hover {
+            transform: scale(1.1);
+        }
+
+        /* Targeting a specific SVG path to change its color */
+        .mastercard-container .red-circle {
+            fill: #c90000;
+            /* A darker red */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <button class="back-to-dashboard" onclick="window.location.href='index.html'">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </button>
+
+        <div class="balance-card text-center mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h3 mb-0">Virtual Card</h1>
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        <div class="notification-icon">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge">3</span>
+                        </div>
+                    </div>
+                    <div>
+                        <img src="https://ui-avatars.com/api/?name=User&background=fff&color=008080"
+                            class="rounded-circle" width="40" height="40" alt="User">
+                    </div>
+                </div>
+            </div>
+
+            <div class="balance-type">Card Balance</div>
+            <div class="balance-container">
+                <div class="eye-toggle" id="eyeToggle">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <h2 class="mb-0" id="balanceDisplay">$1,250.75</h2>
+            </div>
+        </div>
+
+        <div class="virtual-card-container">
+            <div class="virtual-card">
+                <div class="card-chip mt-5 "></div>
+                <div class="card-number" id="cardNumber">**** **** **** 3456</div>
+                <div class="card-details">
+                    <div class="card-holder">
+                        <div class="card-label">CARD HOLDER</div>
+                        <div class="card-value">JOHN DOE</div>
+                    </div>
+                      <div class="card-logo">
+                    <div class="mastercard-container">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 64.67">                        
+                            <circle class="red-circle" cx="32.33" cy="32.33" r="32.33" />
+                            <circle fill="#ff5f00" cx="67.67" cy="32.33" r="32.33" />
+                            <path fill="#ff5f00"
+                                d="M50,32.33A32.34,32.34,0,0,1,17.67,32.33,32.34,32.34,0,0,0,50,32.33Z" />
+                        </svg>
+                    </div>
+
+                </div>
+                    <div class="card-expiry">
+                        <div class="card-label">EXPIRES</div>
+                        <div class="card-value">12/25</div>
+                    </div>
+                </div>
+              
+            </div>
+
+            <div class="card-actions ">
+                <button class="card-btn card-btn-primary" id="showCardNumber">
+                    <i class="fas fa-eye"></i> Show Card Number
+                </button>
+                <button class="card-btn card-btn-secondary" id="freezeCard">
+                    <i class="fas fa-snowflake"></i> Freeze Card
+                </button>
+            </div>
+
+            <div class="card-controls mt-2">
+                <div class="control-item">
+                    <div class="control-icon" style="background: #28a745;">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="control-name">Fund Card</div>
+                    <div class="control-desc">Add money to your virtual card</div>
+                </div>
+                <div class="control-item">
+                    <div class="control-icon" style="background: #dc3545;">
+                        <i class="fas fa-minus"></i>
+                    </div>
+                    <div class="control-name">Withdraw</div>
+                    <div class="control-desc">Transfer money from card to wallet</div>
+                </div>
+                <div class="control-item">
+                    <div class="control-icon" style="background: #17a2b8;">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <div class="control-name">Settings</div>
+                    <div class="control-desc">Manage card preferences</div>
+                </div>
+            </div>
+
+            <h3 class="section-title">Recent Transactions</h3>
+            <div class="transactions-section">
+                <div class="transaction-item">
+                    <div class="transaction-info">
+                        <div class="transaction-icon" style="background: rgba(40, 167, 69, 0.2); color: #28a745;">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="transaction-details">
+                            <div class="transaction-name">Amazon Purchase</div>
+                            <div class="transaction-date">Jun 15, 2023</div>
+                        </div>
+                    </div>
+                    <div class="transaction-amount negative">-$49.99</div>
+                </div>
+
+                <div class="transaction-item">
+                    <div class="transaction-info">
+                        <div class="transaction-icon" style="background: rgba(0, 123, 255, 0.2); color: #007bff;">
+                            <i class="fas fa-coffee"></i>
+                        </div>
+                        <div class="transaction-details">
+                            <div class="transaction-name">Starbucks</div>
+                            <div class="transaction-date">Jun 14, 2023</div>
+                        </div>
+                    </div>
+                    <div class="transaction-amount negative">-$5.75</div>
+                </div>
+
+                <div class="transaction-item">
+                    <div class="transaction-info">
+                        <div class="transaction-icon" style="background: rgba(40, 167, 69, 0.2); color: #28a745;">
+                            <i class="fas fa-arrow-down"></i>
+                        </div>
+                        <div class="transaction-details">
+                            <div class="transaction-name">Card Funding</div>
+                            <div class="transaction-date">Jun 12, 2023</div>
+                        </div>
+                    </div>
+                    <div class="transaction-amount positive">+$500.00</div>
+                </div>
+
+                <div class="transaction-item">
+                    <div class="transaction-info">
+                        <div class="transaction-icon" style="background: rgba(108, 117, 125, 0.2); color: #6c757d;">
+                            <i class="fas fa-film"></i>
+                        </div>
+                        <div class="transaction-details">
+                            <div class="transaction-name">Netflix Subscription</div>
+                            <div class="transaction-date">Jun 10, 2023</div>
+                        </div>
+                    </div>
+                    <div class="transaction-amount negative">-$15.99</div>
+                </div>
+
+                <div class="transaction-item">
+                    <div class="transaction-info">
+                        <div class="transaction-icon" style="background: rgba(255, 193, 7, 0.2); color: #ffc107;">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <div class="transaction-details">
+                            <div class="transaction-name">Restaurant</div>
+                            <div class="transaction-date">Jun 8, 2023</div>
+                        </div>
+                    </div>
+                    <div class="transaction-amount negative">-$68.50</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Balance visibility toggle
+            const eyeToggle = document.getElementById('eyeToggle');
+            const balanceDisplay = document.getElementById('balanceDisplay');
+            let balanceVisible = true;
+
+            eyeToggle.addEventListener('click', function () {
+                balanceVisible = !balanceVisible;
+                if (balanceVisible) {
+                    balanceDisplay.textContent = '$1,250.75';
+                    eyeToggle.innerHTML = '<i class="fas fa-eye"></i>';
+                } else {
+                    balanceDisplay.innerHTML = '<span class="hidden-balance">•••••</span>';
+                    eyeToggle.innerHTML = '<i class="fas fa-eye-slash"></i>';
+                }
+            });
+
+            // Show/hide card number
+            const showCardNumberBtn = document.getElementById('showCardNumber');
+            const cardNumber = document.getElementById('cardNumber');
+            let cardNumberVisible = false;
+
+            showCardNumberBtn.addEventListener('click', function () {
+                cardNumberVisible = !cardNumberVisible;
+                if (cardNumberVisible) {
+                    cardNumber.textContent = '1234 5678 9012 3456';
+                    showCardNumberBtn.innerHTML = '<i class="fas fa-eye-slash"></i> Hide Card Number';
+                } else {
+                    cardNumber.textContent = '**** **** **** 3456';
+                    showCardNumberBtn.innerHTML = '<i class="fas fa-eye"></i> Show Card Number';
+                }
+            });
+
+            // Freeze card functionality
+            const freezeCardBtn = document.getElementById('freezeCard');
+            let cardFrozen = false;
+
+            freezeCardBtn.addEventListener('click', function () {
+                cardFrozen = !cardFrozen;
+                if (cardFrozen) {
+                    freezeCardBtn.innerHTML = '<i class="fas fa-fire"></i> Unfreeze Card';
+                    freezeCardBtn.style.background = 'linear-gradient(135deg, #dc3545, #c82333)';
+                    alert('Card has been frozen. No transactions will be allowed.');
+                } else {
+                    freezeCardBtn.innerHTML = '<i class="fas fa-snowflake"></i> Freeze Card';
+                    freezeCardBtn.style.background = '';
+                    alert('Card has been unfrozen. Transactions are now allowed.');
+                }
+            });
+
+            // Control item clicks
+            document.querySelectorAll('.control-item').forEach(item => {
+                item.addEventListener('click', function () {
+                    const controlName = this.querySelector('.control-name').textContent;
+                    alert(`${controlName} feature would be activated here.`);
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

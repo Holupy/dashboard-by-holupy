@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Referral Program - Finance Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: rgba(4, 80, 80, 0.865);
+            padding-top: 20px;
+            padding-bottom: 80px;
+            margin: 0;
+            transition: all 0.5s ease;
+        }
+
+        .dashboard-card {
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+            border: none;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, rgba(20, 121, 121, 0.961), rgba(6, 167, 167, 0.829));
+            color: white;
+            font-weight: 600;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header:hover {
+            opacity: 0.9;
+        }
+
+        .card-header .toggle-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .card-header .toggle-icon.collapsed {
+            transform: rotate(-90deg);
+        }
+
+        .card-body {
+            background-color: rgba(149, 158, 158, 0.578);
+        }
+
+        .balance-card {
+            background: linear-gradient(135deg, rgb(8, 75, 75), rgba(8, 124, 124, 0.865));
+            color: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .notification-icon {
+            position: relative;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #dc3545;
+            color: white;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .balance-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .eye-toggle {
+            background: rgba(255, 255, 255, 0.2);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .eye-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .hidden-balance {
+            letter-spacing: 5px;
+            margin-right: 4px;
+        }
+
+        .balance-type {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .active-balance {
+            font-weight: 600;
+            color: #ffcc00;
+        }
+
+        /* Referral Page Styles */
+        .referral-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .referral-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 20px;
+            color: white;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .referral-code-section {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .referral-code-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .code-box {
+            flex: 1;
+            background: #f8f9fa;
+            border: 2px dashed #008080;
+            border-radius: 8px;
+            padding: 12px 15px;
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            color: #008080;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .copy-btn {
+            background: #008080;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .copy-btn:hover {
+            background: #006666;
+            transform: translateY(-2px);
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .share-btn {
+            flex: 1;
+            min-width: 120px;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .share-whatsapp {
+            background: #25D366;
+            color: white;
+        }
+
+        .share-telegram {
+            background: #0088cc;
+            color: white;
+        }
+
+        .share-email {
+            background: #ea4335;
+            color: white;
+        }
+
+        .share-link {
+            background: #6c757d;
+            color: white;
+        }
+
+        .referral-bonus-section {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .bonus-balance {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .bonus-amount {
+            font-size: 36px;
+            font-weight: 700;
+            color: #28a745;
+            margin: 10px 0;
+        }
+
+        .withdraw-btn {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0 auto;
+        }
+
+        .withdraw-btn:hover {
+            background: linear-gradient(135deg, #20c997, #198754);
+            transform: translateY(-2px);
+        }
+
+        .referral-history {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .history-table th {
+            text-align: left;
+            padding: 12px 15px;
+            border-bottom: 2px solid #eee;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .history-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: #d1edff;
+            color: #004085;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .bonus-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .bonus-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .bonus-card h4 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .bonus-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #008080;
+        }
+
+        .back-to-dashboard {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .back-to-dashboard:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-5px);
+        }
+
+        .section-title {
+            color: #333;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+
+        .referral-program-info {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .program-tiers {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .tier-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border-left: 4px solid #008080;
+        }
+
+        .tier-name {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .tier-bonus {
+            font-size: 24px;
+            font-weight: 700;
+            color: #28a745;
+            margin: 10px 0;
+        }
+
+        .tier-requirement {
+            font-size: 14px;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .referral-code-container {
+                flex-direction: column;
+            }
+            
+            .share-buttons {
+                flex-direction: column;
+            }
+            
+            .history-table {
+                font-size: 14px;
+            }
+            
+            .history-table th, .history-table td {
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <button class="back-to-dashboard" onclick="window.location.href='index.html'">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </button>
+
+        <div class="balance-card text-center mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h3 mb-0">Referral Program</h1>
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        <div class="notification-icon">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge">3</span>
+                        </div>
+                    </div>
+                    <div>
+                        <img src="https://ui-avatars.com/api/?name=John+Doe&background=008080&color=fff"
+                            class="rounded-circle" width="40" height="40" alt="User">
+                    </div>
+                </div>
+            </div>
+
+            <div class="balance-type">Earn More with Referrals</div>
+            <div class="balance-container">
+                <h2 class="mb-0" style="color: #ffcc00;">Invite Friends, Get Rewards</h2>
+            </div>
+        </div>
+
+        <div class="referral-container">
+            <!-- Referral Stats -->
+            <div class="referral-stats">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #008080;">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-value">24</div>
+                    <div class="stat-label">Total Referrals</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #28a745;">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-value">18</div>
+                    <div class="stat-label">Active Referrals</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #ffc107;">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <div class="stat-value">$1,250</div>
+                    <div class="stat-label">Total Bonus Earned</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #dc3545;">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <div class="stat-value">$325</div>
+                    <div class="stat-label">Pending Bonus</div>
+                </div>
+            </div>
+
+            <!-- Referral Program Info -->
+            <div class="referral-program-info">
+                <h3 class="section-title">Referral Program Tiers</h3>
+                <p>Earn bonuses when your referrals invest in our plans. The more they invest, the higher your bonus percentage!</p>
+                
+                <div class="program-tiers">
+                    <div class="tier-card">
+                        <div class="tier-name">Bronze Tier</div>
+                        <div class="tier-bonus">5% Bonus</div>
+                        <div class="tier-requirement">For investments up to $5,000</div>
+                    </div>
+                    <div class="tier-card">
+                        <div class="tier-name">Silver Tier</div>
+                        <div class="tier-bonus">7% Bonus</div>
+                        <div class="tier-requirement">For investments $5,001 - $10,000</div>
+                    </div>
+                    <div class="tier-card">
+                        <div class="tier-name">Gold Tier</div>
+                        <div class="tier-bonus">10% Bonus</div>
+                        <div class="tier-requirement">For investments over $10,000</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Referral Code Section -->
+            <div class="referral-code-section">
+                <h3 class="section-title">Your Referral Code</h3>
+                <p>Share your unique referral code with friends and earn bonuses when they sign up and invest.</p>
+                
+                <div class="referral-code-container">
+                    <div class="code-box" id="referralCode">FINANCE-7B9C2D-XY</div>
+                    <button class="copy-btn" id="copyReferralBtn">
+                        <i class="fas fa-copy"></i> Copy Code
+                    </button>
+                </div>
+                
+                <div class="share-buttons">
+                    <button class="share-btn share-whatsapp">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </button>
+                    <button class="share-btn share-telegram">
+                        <i class="fab fa-telegram"></i> Telegram
+                    </button>
+                    <button class="share-btn share-email">
+                        <i class="fas fa-envelope"></i> Email
+                    </button>
+                    <button class="share-btn share-link" id="copyLinkBtn">
+                        <i class="fas fa-link"></i> Copy Link
+                    </button>
+                </div>
+            </div>
+
+            <!-- Referral Bonus Section -->
+            <div class="referral-bonus-section">
+                <h3 class="section-title">Referral Bonus Balance</h3>
+                
+                <div class="bonus-balance">
+                    <div class="balance-type">Available Bonus Balance</div>
+                    <div class="bonus-amount">$425.50</div>
+                    <button class="withdraw-btn" id="withdrawBonusBtn">
+                        <i class="fas fa-wallet"></i> Withdraw Bonus
+                    </button>
+                </div>
+                
+                <div class="bonus-details">
+                    <div class="bonus-card">
+                        <h4>Bonus From Investments</h4>
+                        <div class="bonus-value">$875.00</div>
+                        <p>Total earned from referral investments</p>
+                    </div>
+                    <div class="bonus-card">
+                        <h4>Bonus Earned</h4>
+                        <div class="bonus-value">$1,250.00</div>
+                        <p>Total referral bonuses earned</p>
+                    </div>
+                    <div class="bonus-card">
+                        <h4>Bonus Withdrawn</h4>
+                        <div class="bonus-value">$824.50</div>
+                        <p>Amount withdrawn to your wallet</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Referral History -->
+            <div class="referral-history" id="referral-history">
+                <h3 class="section-title">Referral History</h3>
+                
+                <div class="table-responsive">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Referral Name</th>
+                                <th>Investment Plan</th>
+                                <th>Amount</th>
+                                <th>Bonus</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Jun 15, 2023</td>
+                                <td>Michael Johnson</td>
+                                <td>Gold Plan</td>
+                                <td>$15,000</td>
+                                <td>$150.00</td>
+                                <td><span class="status-badge status-completed">Completed</span></td>
+                            </tr>
+                            <tr>
+                                <td>Jun 10, 2023</td>
+                                <td>Sarah Williams</td>
+                                <td>Silver Plan</td>
+                                <td>$7,500</td>
+                                <td>$52.50</td>
+                                <td><span class="status-badge status-active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>Jun 5, 2023</td>
+                                <td>Robert Brown</td>
+                                <td>Bronze Plan</td>
+                                <td>$3,000</td>
+                                <td>$15.00</td>
+                                <td><span class="status-badge status-completed">Completed</span></td>
+                            </tr>
+                            <tr>
+                                <td>May 28, 2023</td>
+                                <td>Emily Davis</td>
+                                <td>Gold Plan</td>
+                                <td>$12,000</td>
+                                <td>$120.00</td>
+                                <td><span class="status-badge status-active">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>May 20, 2023</td>
+                                <td>David Miller</td>
+                                <td>Silver Plan</td>
+                                <td>$8,000</td>
+                                <td>$56.00</td>
+                                <td><span class="status-badge status-pending">Pending</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Copy referral code functionality
+            const copyReferralBtn = document.getElementById('copyReferralBtn');
+            const referralCode = document.getElementById('referralCode');
+            const copyLinkBtn = document.getElementById('copyLinkBtn');
+
+            copyReferralBtn.addEventListener('click', function () {
+                const textArea = document.createElement('textarea');
+                textArea.value = referralCode.textContent;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                // Visual feedback
+                const originalText = copyReferralBtn.innerHTML;
+                copyReferralBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                copyReferralBtn.style.background = '#28a745';
+                
+                setTimeout(() => {
+                    copyReferralBtn.innerHTML = originalText;
+                    copyReferralBtn.style.background = '';
+                }, 2000);
+            });
+
+            // Copy referral link functionality
+            copyLinkBtn.addEventListener('click', function () {
+                const referralLink = 'https://yourfinanceapp.com/signup?ref=' + referralCode.textContent;
+                const textArea = document.createElement('textarea');
+                textArea.value = referralLink;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                // Visual feedback
+                const originalText = copyLinkBtn.innerHTML;
+                copyLinkBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                copyLinkBtn.style.background = '#28a745';
+                
+                setTimeout(() => {
+                    copyLinkBtn.innerHTML = originalText;
+                    copyLinkBtn.style.background = '';
+                }, 2000);
+            });
+
+            // Share buttons functionality
+            document.querySelectorAll('.share-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    const referralLink = 'https://yourfinanceapp.com/signup?ref=' + referralCode.textContent;
+                    const shareText = 'Join me on this amazing finance platform! Use my referral code: ' + referralCode.textContent;
+                    
+                    if (this.classList.contains('share-whatsapp')) {
+                        window.open('https://wa.me/?text=' + encodeURIComponent(shareText + ' ' + referralLink), '_blank');
+                    } else if (this.classList.contains('share-telegram')) {
+                        window.open('https://t.me/share/url?url=' + encodeURIComponent(referralLink) + '&text=' + encodeURIComponent(shareText), '_blank');
+                    } else if (this.classList.contains('share-email')) {
+                        window.location.href = 'mailto:?subject=Join me on Finance App&body=' + encodeURIComponent(shareText + '\n\n' + referralLink);
+                    }
+                });
+            });
+
+            // Withdraw bonus button
+            const withdrawBonusBtn = document.getElementById('withdrawBonusBtn');
+            withdrawBonusBtn.addEventListener('click', function () {
+                if (confirm('Are you sure you want to withdraw your referral bonus to your wallet?')) {
+                    alert('Bonus withdrawal request submitted successfully! Funds will be available in your wallet within 24 hours.');
+                    // In a real app, you would make an API call here
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
