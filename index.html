@@ -85,10 +85,10 @@
             margin-top: 5px;
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 756px) {
             .nav-label {
                 font-weight: 220;
-                font-size: 7px;
+                font-size: 5px;
             }
         }
 
@@ -100,7 +100,11 @@
             margin-bottom: 25px;
             position: relative;
         }
-
+         @media (min-width: 756px) {
+            .balance-card p {
+               font-weight: 5px
+            }
+        }
         .notification-icon {
             position: relative;
             font-size: 20px;
@@ -469,8 +473,8 @@
     <div class="container" id="dashboardContainer">
         <div class="balance-card text-center mb-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1 class="h3 mb-0">Acct NO: <span style="color: wheat;"> 12345676</span>
-                </h1>
+                <p class="h3 mb-0">Acct NO: <span style="color: wheat;"> 12345676</span>
+                </p>
                 <div class="d-flex align-items-center">
                     <div class="me-3">
                         <div class="notification-icon">
