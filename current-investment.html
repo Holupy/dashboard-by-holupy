@@ -418,6 +418,122 @@
             font-weight: 600;
             margin-bottom: 20px;
         }
+
+         /* Profile Icon Styles */
+        .profile-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .profile-icon:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.05);
+        }
+
+        .profile-icon i {
+            color: white;
+            font-size: 18px;
+        }
+
+        .profile-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 250px;
+            z-index: 1000;
+            margin-top: 10px;
+            display: none;
+            overflow: hidden;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .profile-dropdown.show {
+            display: block;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, rgb(8, 75, 75), rgba(8, 124, 124, 0.865));
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+
+        .profile-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .profile-avatar i {
+            font-size: 24px;
+            color: white;
+        }
+
+        .profile-name {
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .profile-email {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .profile-menu {
+            padding: 10px 0;
+        }
+
+        .profile-menu-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: rgba(4, 40, 40, 0.678);
+        }
+
+        .profile-menu-item:hover {
+            background-color: rgb(179, 207, 207);
+        }
+
+        .profile-menu-item i {
+            width: 20px;
+            margin-right: 10px;
+            color: #6c757d;
+        }
+
+        .profile-menu-item.logout {
+            border-top: 1px solid #e9ecef;
+            color: #dc3545;
+        }
+
+        .profile-menu-item.logout i {
+            color: #dc3545;
+        }
+
     </style>
 </head>
 
@@ -437,9 +553,37 @@
                             <span class="notification-badge">3</span>
                         </div>
                     </div>
-                    <div>
-                        <img src="https://ui-avatars.com/api/?name=John+Doe&background=008080&color=fff"
-                            class="rounded-circle" width="40" height="40" alt="User">
+                    <div class="profile-container">
+                        <div class="profile-icon" id="profileIcon">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <div class="profile-dropdown" id="profileDropdown">
+                            <div class="profile-header">
+                                <div class="profile-avatar">
+                                    <i class="fa-solid fa-user"></i>
+                                </div>
+                                <div class="profile-name">John Doe</div>
+                                <div class="profile-email">john.doe@example.com</div>
+                            </div>
+                            <div class="profile-menu">
+                                <div class="profile-menu-item">
+                                    <i class="fas fa-user"></i>
+                                    <span>My Profile</span>
+                                </div>
+                                <div class="profile-menu-item">
+                                    <i class="fas fa-cog"></i>
+                                    <span>Settings</span>
+                                </div>
+                                <div class="profile-menu-item">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <span>Security</span>
+                                </div>
+                                <div class="profile-menu-item logout" id="logoutBtn">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span >Logout</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -621,6 +765,37 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+ // Profile dropdown functionality
+            const profileIcon = document.getElementById('profileIcon');
+            const profileDropdown = document.getElementById('profileDropdown');
+            const logoutBtn = document.getElementById('logoutBtn');
+
+            // Toggle profile dropdown
+            profileIcon.addEventListener('click', function(e) {
+                e.stopPropagation();
+                profileDropdown.classList.toggle('show');
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function() {
+                profileDropdown.classList.remove('show');
+            });
+
+            // Prevent dropdown from closing when clicking inside it
+            profileDropdown.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+
+            // Logout functionality
+            logoutBtn.addEventListener('click', function() {
+                if (confirm('Are you sure you want to logout?')) {
+                    alert('You have been logged out successfully.');
+                    // In a real application, you would redirect to login page
+                    // window.location.href = 'login.html';
+                }
+            });
+
+
         document.addEventListener('DOMContentLoaded', function () {
             // Balance visibility toggle
             const eyeToggle = document.getElementById('eyeToggle');
