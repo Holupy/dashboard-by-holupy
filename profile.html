@@ -486,13 +486,13 @@
                 flex-direction: column;
                 text-align: center;
             }
-            
+
             .program-card {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 15px;
             }
-            
+
             .kyc-steps {
                 flex-wrap: wrap;
                 gap: 15px;
@@ -542,7 +542,7 @@
                 <div class="profile-info">
                     <h2>John Doe</h2>
                     <p><i class="fas fa-envelope me-2"></i>johndoe@example.com</p>
-                    
+
                     <div class="referral-code">
                         <span>Referral Code:</span>
                         <div class="code-box" id="referralCode">REF-7B9C2D</div>
@@ -550,10 +550,11 @@
                             <i class="fas fa-copy"></i> Copy
                         </button>
                     </div>
-                    
+
                     <div class="kyc-status">
                         <span>KYC Status:</span>
-                        <div class="status-badge status-pending" id="kycStatus" onclick="window.location.href='#kyc-verification'">
+                        <div class="status-badge status-pending" id="kycStatus"
+                            onclick="window.location.href='#kyc-verification'">
                             <i class="fas fa-clock me-1"></i> Pending
                         </div>
                     </div>
@@ -562,7 +563,7 @@
 
             <div class="investment-programs">
                 <h3 style="color: white; margin-bottom: 20px;">Active Investment Programs</h3>
-                
+
                 <div class="program-card">
                     <div class="program-info">
                         <h4>Gold Investment Plan</h4>
@@ -585,7 +586,7 @@
                         <i class="fas fa-clock me-1"></i> 5 Days Remaining
                     </div>
                 </div>
-                
+
                 <div class="program-card">
                     <div class="program-info">
                         <h4>Silver Investment Plan</h4>
@@ -629,8 +630,8 @@
                         </div>
                     </div>
                     <div>
-                        <img src="https://ui-avatars.com/api/?name=John+Doe&background=008080&color=fff"
-                            class="rounded-circle" width="40" height="40" alt="User">
+                        <img src="https://ui-avatars.com/api/?name=Color+Avatar&background=random&color=fff" 
+                                      class="rounded-circle" width="40" height="40" alt="User">
                     </div>
                 </div>
             </div>
@@ -680,7 +681,7 @@
             <div class="kyc-form">
                 <div class="form-section">
                     <h3>Identity Document Verification</h3>
-                    
+
                     <div class="form-group">
                         <label class="form-label">Document Type</label>
                         <select class="form-control">
@@ -690,17 +691,17 @@
                             <option value="national_id">National ID Card</option>
                         </select>
                     </div>
-                    
+
                     <div class="form-group">
                         <label class="form-label">Document Number</label>
                         <input type="text" class="form-control" placeholder="Enter your document number">
                     </div>
-                    
+
                     <div class="form-group">
                         <label class="form-label">Expiry Date</label>
                         <input type="date" class="form-control">
                     </div>
-                    
+
                     <div class="form-group">
                         <label class="form-label">Upload Front of Document</label>
                         <div class="file-upload" id="frontUpload">
@@ -709,7 +710,7 @@
                             <small>Supported formats: JPG, PNG, PDF (Max 5MB)</small>
                         </div>
                     </div>
-                    
+
                     <div class="form-group">
                         <label class="form-label">Upload Back of Document</label>
                         <div class="file-upload" id="backUpload">
@@ -719,7 +720,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <button class="submit-btn">
                     <i class="fas fa-arrow-right me-2"></i> Continue to Next Step
                 </button>
@@ -757,12 +758,12 @@
                 textArea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textArea);
-                
+
                 // Visual feedback
                 const originalText = copyReferralBtn.innerHTML;
                 copyReferralBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
                 copyReferralBtn.style.background = '#28a745';
-                
+
                 setTimeout(() => {
                     copyReferralBtn.innerHTML = originalText;
                     copyReferralBtn.style.background = '';
@@ -771,18 +772,18 @@
 
             // KYC status click to navigate to KYC page
             const kycStatus = document.getElementById('kycStatus');
-            kycStatus.addEventListener('click', function() {
+            kycStatus.addEventListener('click', function () {
                 showKycPage();
             });
 
             // File upload functionality
             document.querySelectorAll('.file-upload').forEach(upload => {
-                upload.addEventListener('click', function() {
+                upload.addEventListener('click', function () {
                     const input = document.createElement('input');
                     input.type = 'file';
                     input.accept = 'image/jpeg,image/png,application/pdf';
-                    
-                    input.addEventListener('change', function() {
+
+                    input.addEventListener('change', function () {
                         if (this.files && this.files[0]) {
                             const fileName = this.files[0].name;
                             upload.innerHTML = `
@@ -792,7 +793,7 @@
                             `;
                         }
                     });
-                    
+
                     input.click();
                 });
             });
